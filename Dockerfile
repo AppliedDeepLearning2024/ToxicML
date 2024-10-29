@@ -4,6 +4,6 @@ RUN pip install poetry
 
 COPY . .
 
-RUN poetry install
+RUN poetry install --no-root
 
 CMD ["poetry", "run", "fastapi", "run", "ToxicMl/Api/main.py", "--port", "8081"]
