@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = "^0.115.4"
+fastapi = {extras = ["standard"], version = "^0.115.4"}
 scikit-learn = "^1.5.2"
 pandas = "^2.2.3"
 matplotlib = "^3.9.2"
