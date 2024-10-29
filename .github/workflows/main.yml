@@ -36,4 +36,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: custibor29/toxic/toxicml:latest
+        tags: custibor29/toxicml:latest
