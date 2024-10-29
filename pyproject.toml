@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "toxicml"
+version = "0.1.0"
+description = ""
+authors = ["Tibor Cus <tibor.cus@itsv.at>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115.4"
+scikit-learn = "^1.5.2"
+pandas = "^2.2.3"
+matplotlib = "^3.9.2"
+pytest = "^8.3.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
