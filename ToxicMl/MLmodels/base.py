@@ -11,9 +11,6 @@ class Endpoint(str, Enum):
     endpoint1 = "endpoint1"
     endpoint2 = "endpoint2"
 
-class MlModel(BaseModel):
-    name: str
-    endpoint: list[Endpoint]
 
 class EndpointPrediction(BaseModel):
     endpoint: Endpoint

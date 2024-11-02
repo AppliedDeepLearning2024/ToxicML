@@ -21,12 +21,12 @@ async def root():
 
 
 @app.get("/mlmodels")
-async def getMlModels() -> list[MlModel]:
+async def getMlModels() -> list[str]:
 	return [
-		MlModel(name="RandomModel", endpoint=[Endpoint.endpoint1, Endpoint.endpoint2])
+		"RandomModel"
 	]
 
-@app.post("/prediction/randommodel/")
+@app.post("/inference/randommodel/")
 async def getPredictionsRandomModel(smiles: list[str]) -> list[Prediction]:
 	return randomModel.predictBatch(smiles)
 	
