@@ -16,12 +16,14 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install poetry
       run: |  
-          cd ..
           python -m pip install --upgrade pip  
           pip install poetry
     - name: Install dependencies
       run: |  
           poetry install 
+    - name: Update path to enable importing
+      run: echo "PYTHONPATH=home/runner/work/ToxicML" >> $GITHUB_ENV
+      shell: bash
     - name: Run tests
       run: |  
           poetry run pytest .
