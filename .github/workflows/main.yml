@@ -23,8 +23,10 @@ jobs:
           poetry install 
     - name: Update path to enable importing
       run: | 
-          echo "PYTHONPATH=home/runner/work/ToxicML" >> $GITHUB_ENV
-          pwd
+          PWD=$(pwd)
+          export PYTHONPATH=$PWD
+          echo "PYTHONPATH=$PYTHONPATH" >> $GITHUB_ENV
+          echo $PYTHONPATH
           echo $GITHUB_ENV
       shell: bash
     - name: Run tests
