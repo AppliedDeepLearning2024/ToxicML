@@ -7,12 +7,14 @@ from ToxicMl.MLmodels.base import BaseModel, Prediction, EndpointPrediction, End
 
 class RandomModel(BaseModel):
     def __init__(self, seed = None, name="UniformRandomModel"):
+        super().__init__()
         self.name = name
         self.seed = seed
         self.generator = rnd.Random()
         self.generator.seed(seed)
 
     def predict(self, smile: str) -> Prediction:
+        self.preprocessor.getMoleculesFromSmiles([smile])
         predictions = [   
             EndpointPrediction(endpoint=endpoint, value=np.random.uniform(0,1))
             for endpoint in Endpoint
