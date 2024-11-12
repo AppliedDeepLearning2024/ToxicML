@@ -86,7 +86,7 @@ def fit_basic_models(X_train, y_train, models):
             ('selector', VarianceThreshold(threshold=0.8*0.2)),
             (name, model),
         ])
-        pipe.fit(X_train, y_train.values.ravel())
+        pipe.fit(X_train, y_train)
         pipelines.append( (name, pipe) )
     return pipelines
 
