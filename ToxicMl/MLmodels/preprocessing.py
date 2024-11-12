@@ -3,6 +3,7 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import MolFromSmiles
 from rdkit.Chem import Mol
 from rdkit.Chem import Descriptors
+from rdkit import Chem
 from pandas import DataFrame
 import numpy as np
 
@@ -20,6 +21,11 @@ class ChemicalPreprocessor:
         self.morgan_radius = morgan_radius
         self.morgan_size = morgan_size
         self.fpgen = AllChem.GetMorganGenerator(radius=morgan_radius,fpSize=morgan_size)
+
+    def ReorderCanonicalRankAtoms(mol):
+        order = tuple(zip(*sorted([(j, i) for i, j in enumerate(Chem.CanonicalRankAtoms(mol))])))[1]
+        mol_renum = Chem.RenumberAtoms(mol, order)
+        return mol_renum, order
 
     def getMoleculesFromSmiles(self, codes: list[str]) -> list[Mol]:
         chemicals = [
