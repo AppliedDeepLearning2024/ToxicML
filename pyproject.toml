@@ -15,10 +15,18 @@ pytest = "^8.3.3"
 pydantic = "^2.9.2"
 rdkit = "^2024.3.5"
 molvs = "^0.1.1"
+torch = {version = "^2.5.1+cpu", source = "pytorch_cpu"}
+torchvision = {version = "^0.20.1+cpu", source = "pytorch_cpu"}
 
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.5"
+
+
+[[tool.poetry.source]]
+name = "pytorch_cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]
