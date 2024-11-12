@@ -8,6 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.impute import SimpleImputer
+import tqdm
 
 def split_by_features(df):
     X = df[["smiles"]]
