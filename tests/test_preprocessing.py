@@ -38,3 +38,23 @@ def testGetDescriptorsFromMol():
     isinstance(descriptors, np.ndarray)
     assert descriptors.shape == (3, 210) 
     print(descriptors.shape)
+
+
+def testGetGraphFromSmile():
+    def check_graph(graph):
+        assert 'edge_index' in graph.keys()
+        assert 'edge_feat' in graph.keys()
+        assert 'node_feat' in graph.keys()
+        assert 'num_nodes' in graph.keys()
+        assert 'descriptors' in graph.keys()
+
+        assert graph["num_nodes"] > 0
+
+    graph = preprocessor.smiles2graph(SMILES[0])
+    check_graph(graph)
+
+    graph = preprocessor.smiles2graph(SMILES[1])
+    check_graph(graph)
+
+    graph = preprocessor.smiles2graph(SMILES[2])
+    check_graph(graph)
