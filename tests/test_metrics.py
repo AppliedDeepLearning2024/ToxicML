@@ -75,29 +75,6 @@ def test_recall():
     assert "Recall" in metric.to_dict().keys()
 
 
-def test_recall():
-    metric = Recall()
-    assert metric.compute() == 0
-
-    prediction1 = Uniform(0,1).sample((1000,1))
-    target1 = torch.round(Uniform(0,1).sample((1000,1)))
-
-
-    metric.update(prediction1, target1)
-    assert recall_score(torch.round(prediction1), target1) == metric.compute()
-
-    prediction2 = Uniform(0,1).sample((1000,1))
-    target2 = torch.round(Uniform(0,1).sample((1000,1)))
-    metric.update(prediction2, target2)
-    predictions = torch.round(torch.tensor(prediction1.tolist() + prediction2.tolist()))
-    targets = torch.tensor(target1.tolist() + target2.tolist())
-    sklearn_metric = recall_score(predictions, targets)
-
-    assert sklearn_metric == metric.compute()
-
-    assert "Recall" in metric.to_dict().keys()
-
-
 def test_f1():
     metric = F1()
     assert metric.compute() == 0
