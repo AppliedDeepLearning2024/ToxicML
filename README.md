@@ -38,21 +38,32 @@ The project has the following file structure
 - **trainer.py** Contains classes used for training regression and classification problems and logging their performance to [Weights & Biases](https://wandb.ai/site)
 - **metrics.py** Contains additional custom metrics used evaluation of our models
 - **dataset.py** Contains [PyG dataset objects](https://pytorch-geometric.readthedocs.io/en/2.6.0/generated/torch_geometric.data.InMemoryDataset.html) used for the loading and preparing of datasets
+## Dependency management
+Instead of the traditional requirements.txt file, this project uses [Poetry](https://python-poetry.org/) for dependency management since it offers superior dependency management for Python projects by providing a lock file (poetry.lock) that ensures repeatable builds by tracking precise versions of all dependencies, including transitive ones. It has a better dependency resolver than pip and helpful error messages. It also removes the need for multiple configuration files (e.g., setup.py, setup.cfg, and test configs) which reduces repository clutter. Additionally, it simplifies virtual environment management and streamlines building and publishing packages to PyPI.
+
 ## CI/CD
-## Dataset description
-## Traditional ML methods
-### Performance and evaluation
-## Graph Neural Networks
-### Graph Encoding
-### Overview of Graph Methods
-### Establishing a baseline
-### Trying Different model architectures
-### Transfer Learning
-### Custom graph encodings
-## Improvements
-## Summary
+For Continues integration and development this project relies on [GitHub Actions](https://github.com/features/actions). We have defined a simple pipeline that contains the following steps:
+1. setup Python and poetry
+2. install dependencies using poetry
+3. run pytest
+4. code quality check with [ruff](https://github.com/astral-sh/ruff-action)
+5. build docker container
+6. publish container to [DockerHub](https://hub.docker.com/repository/docker/custibor29/toxicml/general)
 
-
+If any of the steps fails the whole pipeline fails
+## Modeling
+### Dataset description
+### Traditional ML methods
+#### Performance and evaluation
+### Graph Neural Networks
+#### Graph Encoding
+#### Overview of Graph Methods
+#### Establishing a baseline
+#### Trying Different model architectures
+#### Transfer Learning
+#### Custom graph encodings
+### Improvements
+### Summary
 
 # Building and running the application
 Build and run the container
