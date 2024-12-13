@@ -1,6 +1,5 @@
 from abc import ABCMeta, abstractmethod
 import torch
-from statistics import mean
 
 class PerformanceMeasure(metaclass=ABCMeta):
     '''

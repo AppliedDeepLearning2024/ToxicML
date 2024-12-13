@@ -43,7 +43,16 @@ class HivDataset(InMemoryDataset):
                         descriptors = torch.tensor(graph["descriptors"], dtype=torch.float32)
                     )
                 )
-
+        s = [
+            el.descriptors for el in data_list
+        ]
+        s = torch.cat(s)
+        means = s.mean(dim=0)
+        std = s.std(dim=0)
+        normalized = (s - means) / std
+        nan_mask = torch.isnan(normalized).any(dim=0)
+        for i, el in enumerate(data_list):
+            el.descriptors = normalized[i,~nan_mask]
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
 
@@ -111,7 +120,16 @@ class LipoDataset(InMemoryDataset):
                         descriptors = torch.tensor(graph["descriptors"], dtype=torch.float32)
                     )
                 )
-
+        s = [
+            el.descriptors for el in data_list
+        ]
+        s = torch.cat(s)
+        means = s.mean(dim=0)
+        std = s.std(dim=0)
+        normalized = (s - means) / std
+        nan_mask = torch.isnan(normalized).any(dim=0)
+        for i, el in enumerate(data_list):
+            el.descriptors = normalized[i,~nan_mask]
         if self.pre_filter is not None:
             data_list = [data for data in data_list if self.pre_filter(data)]
 
