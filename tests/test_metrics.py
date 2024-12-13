@@ -68,7 +68,7 @@ def test_recall():
     metric.update(prediction2, target2)
     predictions = torch.round(torch.tensor(prediction1.tolist() + prediction2.tolist()))
     targets = torch.tensor(target1.tolist() + target2.tolist())
-    sklearn_metric = recall_score(predictions, targets)
+    sklearn_metric = torch.tensor(recall_score(predictions, targets))
 
     assert sklearn_metric == metric.compute()
 
@@ -84,7 +84,7 @@ def test_f1():
 
 
     metric.update(prediction1, target1)
-    assert isclose(f1_score(torch.round(prediction1), target1), metric.compute())
+    assert isclose(torch.tensor(f1_score(torch.round(prediction1), target1)), metric.compute())
 
     prediction2 = Uniform(0,1).sample((1000,1))
     target2 = torch.round(Uniform(0,1).sample((1000,1)))
@@ -93,7 +93,7 @@ def test_f1():
     targets = torch.tensor(target1.tolist() + target2.tolist())
     sklearn_metric = f1_score(predictions, targets)
 
-    assert isclose(sklearn_metric,metric.compute())
+    assert isclose(torch.tensor(sklearn_metric),metric.compute())
 
     assert "F1" in metric.to_dict().keys()
 
@@ -107,7 +107,7 @@ def test_mse():
 
 
     metric.update(prediction1, target1)
-    assert isclose(mean_squared_error(prediction1, target1), metric.compute(), abs_tol=0.001)
+    assert isclose(torch.tensor(mean_squared_error(prediction1, target1)), metric.compute(), abs_tol=0.001)
 
     prediction2 = Normal(0,1).sample((1000,1))
     target2 = Normal(0,1).sample((1000,1))
@@ -116,7 +116,7 @@ def test_mse():
     targets = torch.tensor(target1.tolist() + target2.tolist())
     sklearn_metric = mean_squared_error(predictions, targets)
 
-    assert isclose(sklearn_metric,metric.compute(), abs_tol=0.001)
+    assert isclose(torch.tensor(sklearn_metric),metric.compute(), abs_tol=0.001)
 
     assert "MSE" in metric.to_dict().keys()
 
