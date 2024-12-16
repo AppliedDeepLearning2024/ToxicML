@@ -202,6 +202,14 @@ Lipo:
 
 
 ### Improvements
+Contrastive learning: https://arxiv.org/pdf/2109.01116
+Learning multiple attributes at the same time: [1] Sharma, B., Chenthamarakshan, V., Dhurandhar, A. et al. Accurate clinical toxicity prediction using multi-task deep neural nets and contrastive molecular explanations. Sci Rep 13, 4908 (2023). https://doi.org/10.1038/s41598-023-31169-8
+
+AUC LOSS: Large-scale Robust Deep AUC Maximization: A New Surrogate Loss and Empirical Studies on Medical Image Classification, https://arxiv.org/abs/2012.03173
+
+GENERALIZED AGGREGATION FUNCTION, novel graph normalization layers, :https://arxiv.org/pdf/2006.07739
+
+ensembles and hypergraphs: https://github.com/zhangxwww/HyperFusion/blob/master/Multi_Model_Ensemble_on_Hypergraph.pdf
 ### Summary
 
 # Building and running the application
