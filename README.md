@@ -246,14 +246,19 @@ The graph-level features, seem to hurt the Lipo models. This could be due to the
 
 
 ### Improvements
-Contrastive learning: https://arxiv.org/pdf/2109.01116
-Learning multiple attributes at the same time: [1] Sharma, B., Chenthamarakshan, V., Dhurandhar, A. et al. Accurate clinical toxicity prediction using multi-task deep neural nets and contrastive molecular explanations. Sci Rep 13, 4908 (2023). https://doi.org/10.1038/s41598-023-31169-8
 
-AUC LOSS: Large-scale Robust Deep AUC Maximization: A New Surrogate Loss and Empirical Studies on Medical Image Classification, https://arxiv.org/abs/2012.03173
+Our models still have considerable potential for improvement. A simple yet promising approach might involve replacing the cross-entropy loss function with the AUC loss, which has shown great promise in recent [research](https://arxiv.org/abs/2012.03173). 
 
-GENERALIZED AGGREGATION FUNCTION, novel graph normalization layers, :https://arxiv.org/pdf/2006.07739
+In the case of the lipo dataset, we encountered difficulties due to the limited number of data points. One possible solution could be to apply [Graph contrastive learning](https://arxiv.org/pdf/2109.01116). This method first creates multiple graph views by applying stochastic augmentations to the input and then learns representations by contrasting positive samples with negative ones. This approach is self-supervised.
 
-ensembles and hypergraphs: https://github.com/zhangxwww/HyperFusion/blob/master/Multi_Model_Ensemble_on_Hypergraph.pdf
+Another avenue for improvement would be to train our models to predict multiple chemical features simultaneously (for example, solubility and whether the chemical affects HIV). This approach tends to lead to models that perform better on individual tasks, as shown by [Sharma, B., Chenthamarakshan, V., Dhurandhar, A. et al.](https://doi.org/10.1038/s41598-023-31169-8).
+
+It may also be beneficial to experiment with [generalized aggregation functions](https://arxiv.org/pdf/2006.07739), [specialized normalization layers](https://arxiv.org/pdf/2006.07739), and the use of skip connections, which could assist in constructing deeper networks.
+
+Lastly, we could explore the idea of implementing an ensemble of different networks and combining their results using the [hypergraph](https://github.com/zhangxwww/HyperFusion/blob/master/Multi_Model_Ensemble_on_Hypergraph.pdf) approach.
+
+Finally, we could also try implementing an ensemble of different networks and fusing their results according to the [hypergraph](https://github.com/zhangxwww/HyperFusion/blob/master/Multi_Model_Ensemble_on_Hypergraph.pdf) approach.
+
 ### Summary
 
 For the HIV dataset, we begin by transforming the SMILES strings into numerical features using RDKit, which encodes the molecules into a 210-dimensional feature vector. We first evaluate traditional machine learning models, including Logistic Regression, Random Forest, and Naive Bayes. These models are trained and optimized, and their performance is assessed using metrics like F1 score, precision, and recall to account for the class imbalance (with far fewer positive samples than negative ones).
@@ -281,7 +286,7 @@ While GNNs show great potential, traditional ML methods like Random Forest perfo
 | transfer learn          | 3h       |
 | custom atom encodings   | 8h       |
 | graph level attributes  | 3h       |
-| report                  | 5h       |
+| report                  | 8h       |
 
 # Building and running the application
 Build and run the container
