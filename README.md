@@ -217,6 +217,8 @@ We can see that the new encodings provided a boos in score on bot datasets, espe
 
 #### Graph level attributes
 
+Up until now, the models have only used node-level features derived from various nonlinear operations on the atom features. However, we can also incorporate graph-level attributes, similar to those used in the chapter on traditional ML methods. These graph-level attributes can be concatenated with the aggregated feature vector obtained from the convolutions and passed to the final multi-layer perceptron. By adding this extra information, we aim to improve the model's performance.
+
 |model         |F1               |Recall          |Precision       |
 |--------------|-----------------|----------------|----------------|
 |ATTENTION 5-128, descriptors|0.150110375275938|0.0876288659793814|0.523076923076923|
@@ -228,6 +230,8 @@ We can see that the new encodings provided a boos in score on bot datasets, espe
 |ATTENTION 3-32, descriptors|0.175742574257426|0.104719764011799|0.546153846153846|
 |ATTENTION 3-16, descriptors|0.151515151515152|0.0892857142857143|0.5             |
 
+We can see that adding the graph-level features seems to have improved the average performance of our models, but we have not beaten our previous best model.
+
 
 |model         |mean absolute error|mean squared error|Max Error       |
 |--------------|-------------------|------------------|----------------|
@@ -237,6 +241,8 @@ We can see that the new encodings provided a boos in score on bot datasets, espe
 |GCN 3-64, descriptors|1.01371599719638   |1.65436596529824  |9.82572746276856|
 |GCN 3-32, descriptors|0.987400636218843  |1.405355153765    |3.88957548141479|
 |GCN 3-16, descriptors|0.966446550687154  |1.34005836248398  |3.67364239692688|
+
+The graph-level features, seem to hurt the Lipo models. This could be due to the increase in the number of parameters that our model contains without also increasing the amount of available data used for its training. 
 
 
 ### Improvements
