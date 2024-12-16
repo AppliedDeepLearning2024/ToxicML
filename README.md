@@ -187,8 +187,8 @@ Transfer learning involves pretraining a model on a large, related dataset and t
 Overall we can see that transfer learning did have a small effect on the performance of our models, the performance could be greatly improved if we used an even larger dataset of molecules with similar tasks and trained them on molecule-level features, that can easily be computed using Rdkit. The downside is that pretraining on large molecular datasets can be resource-intensive, especially with advanced GNN architectures.
 
 #### Custom graph encodings
-
-
+Until now we have been using the already provided data loader which represents each atom as a 9-dimensional feature vector. The encoding is not that informative as it contains some bad feature design such as a continuous variable being used to represent categorical values. For this reason, we have decided to generate custom atom encoding using the [chemprop atom featurizer](https://chemprop.readthedocs.io/en/latest/tutorial/python/featurizers/atom_featurizers.html) which generates more informative features. 
+Also from this point on we will focus on Attention models on the HIV dataset and GCN models on the lipo dataset as they seem to give the best performance on each domain respectively. 
 
 |model         |F1               |Recall          |Precision       |
 |--------------|-----------------|----------------|----------------|
@@ -212,6 +212,8 @@ Overall we can see that transfer learning did have a small effect on the perform
 |GCN 5-16, custom dataset|0.944897433121999  |1.35001425288972  |3.69466733932495|
 |GCN 5-32, custom dataset|0.95581499508449   |1.36479978022121  |4.01023101806641|
 |GCN 3-16, custom dataset|0.963180348123442  |1.38878712305571  |4.3234124412    |
+
+We can see that the new encodings provided a boos in score on bot datasets, especially on the Hiv one, where the best f1 score more than doubled. 
 
 #### Graph level attributes
 
@@ -247,6 +249,19 @@ GENERALIZED AGGREGATION FUNCTION, novel graph normalization layers, :https://arx
 
 ensembles and hypergraphs: https://github.com/zhangxwww/HyperFusion/blob/master/Multi_Model_Ensemble_on_Hypergraph.pdf
 ### Summary
+
+## Time breakdown
+
+| task                    | duration |
+|-------------------------|----------|
+| project setup           | 5h       |
+| traditional ml methods  | 6h       |
+| baseline                | 10h      |
+| different architectures | 5h       |
+| transfer learn          | 3h       |
+| custom atom encodings   | 8h       |
+| graph level attributes  | 3h       |
+| report                  | 5h       |
 
 # Building and running the application
 Build and run the container
