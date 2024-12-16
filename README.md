@@ -107,7 +107,7 @@ Because the HIV dataset is unbalanced, we will also experiment with the weighted
 |-------------------------|---------|-----------|---------|
 | base GNN                | 0       | 0         | 0       |
 | base GNN, weighted loss | 0       | 0         | 0       |
-| base GNN, sampling      | 0.05941 | 0.4815    | 0.03166 | 
+| base GNN, sampling      | 0.05141 | 0.4415    | 0.03166 | 
 
 The base GNN model shows no performance (all metrics are 0), indicating it fails to learn meaningful patterns from the unbalanced dataset without additional strategies. Using a weighted loss function does not improve performance, suggesting that this approach alone may not adequately address the severe class imbalance in the dataset. Incorporating sampling through the Imbalanced Sampler yields a slight improvement, with a modest F1 score (0.05941), precision (0.4815), and recall (0.03166). This suggests that sampling helps the model detect some positive samples but still struggles to balance precision and recall effectively. The baseline metrics are much lower than the Traditional ML methods, and the models will probably require a much bigger time investment than the traditional methods to achieve the same performance.
 
@@ -118,6 +118,16 @@ The base GNN model shows no performance (all metrics are 0), indicating it fails
 The base GNN achieves a mean absolute error (1.048) and mean squared error (1.63), which are relatively high compared to traditional ML methods like Random Forest (MSE: 0.629434) in the earlier discussion.
 
 #### Trying Different model architectures
+
+In this section, we will focus on improving the baseline performance using bigger models and more advanced architectures. First, let's define a convolutional block as a sequence of:
+
+1. Dropout operation
+2. Convolutional operation
+3. Activation operation
+4. Batch normalization operation
+
+We can then stack multiple convolution blocks to easily increase the depth of our model, and change the size of the atom embeddings to increase the size of each layer. Finally, the convolution blocks need to be followed by an aggregation operation and a multi-layer perceptron. We will also experiment with using different types of convolutions such as [SAGE Convolution](https://arxiv.org/abs/1706.02216) block and an [attention convolution block](https://arxiv.org/abs/2105.14491). 
+
 
 |model         |F1               |Recall          |Precision       |
 |--------------|-----------------|----------------|----------------|
@@ -133,6 +143,8 @@ The base GNN achieves a mean absolute error (1.048) and mean squared error (1.63
 |GCN  5-64     |0.0692751763951251|0.0365358592692828|0.666666666666667|
 |GCN  5-32     |0.0654911838790932|0.0345056403450564|0.641975308641975|
 |GCN  3-32     |0.0629241209130166|0.0331168831168831|0.62962962962963|
+
+Attention-based models exhibit slightly better recall compared to SAGE but suffer from lower precision. The best-performing attention-based model, ATTENTION 3-32, achieves an F1 score of 0.0724, with reasonable recall (0.0396). The embedding size and number of layers, don't seem to have a drastic effect on the performance.
 
 
 
@@ -151,15 +163,20 @@ The base GNN achieves a mean absolute error (1.048) and mean squared error (1.63
 |ATTENTION 3-16|1.07211020446959 |1.69643115316119|3.68811869621277|
 |ATTENTION 5-64|1.05044556799389 |1.78613442466373|8.43711090087891|
 
-#### Transfer Learning
+The GCN models consistently outperform both SAGE and Attention models, achieving the lowest Mean Absolute Error (MAE) and Mean Squared Error (MSE). For example, GCN 3-32 achieves an MAE of 0.9836 and an MSE of 1.4827, the best among all models. SAGE models show a wide range of performance, with SAGE 5-64 achieving a competitive MAE (0.9965) but a high max error (7.5455), indicating poor handling of extreme values. Attention-based models generally perform worse, with higher MAE and MSE values compared to GCN and SAGE. For instance, ATTENTION 5-64 has the highest MSE (1.7861) and struggles with larger max errors (e.g., 8.4371).
 
-| model                      | f1       | precision | recall   |
+We did manage to slightly improve our models performance, but compared to the traditional methods, the numbers are still low. 
+
+#### Transfer Learning
+Transfer learning involves pretraining a model on a large, related dataset and then fine-tuning it on a smaller target dataset. For the HIV and Lipo datasets, this could be done by retraining the model on one dataset, and fine-tuning it on the other. This could help us learn more robust features, especially when pretraining on the Hiv dataset as it is much larger than the Lipo dataset.
+
+| model                      | f1       | recall    | precision|
 |----------------------------|----------|-----------|----------|
 | ATTENTION 3-32, pretrained | 0.08709  | 0.04957   | 0.358123 |
 | SAGE 3-32, pretrained      | 0.06452  | 0.03478   | 0.444412 |
 | GCN  3-32, pretrained      | 0.061973 | 0.76422   | 0.395147 |
 
-Lipo:
+
 | model                    | mean absolute error | mean squared error | max error |
 |--------------------------|---------------------|--------------------|-----------|
 | ATTENTION 3-32, transfer | 1.01826             | 1.60076            | 5.21495   |
@@ -167,9 +184,11 @@ Lipo:
 | SAGE 3-32, transfer      | 0.99493             | 1.46699            | 3.78525   |
 
 
-
+Overall we can see that transfer learning did have a small effect on the performance of our models, the performance could be greatly improved if we used an even larger dataset of molecules with similar tasks and trained them on molecule-level features, that can easily be computed using Rdkit. The downside is that pretraining on large molecular datasets can be resource-intensive, especially with advanced GNN architectures.
 
 #### Custom graph encodings
+
+
 
 |model         |F1               |Recall          |Precision       |
 |--------------|-----------------|----------------|----------------|
