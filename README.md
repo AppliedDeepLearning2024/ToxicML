@@ -256,6 +256,20 @@ GENERALIZED AGGREGATION FUNCTION, novel graph normalization layers, :https://arx
 ensembles and hypergraphs: https://github.com/zhangxwww/HyperFusion/blob/master/Multi_Model_Ensemble_on_Hypergraph.pdf
 ### Summary
 
+For the HIV dataset, we begin by transforming the SMILES strings into numerical features using RDKit, which encodes the molecules into a 210-dimensional feature vector. We first evaluate traditional machine learning models, including Logistic Regression, Random Forest, and Naive Bayes. These models are trained and optimized, and their performance is assessed using metrics like F1 score, precision, and recall to account for the class imbalance (with far fewer positive samples than negative ones).
+
+Next, we turn to Graph Neural Networks (GNNs) for the same task. SMILES data is converted into graph representations where atoms are treated as nodes and bonds as edges. We use a simple Graph Convolutional Network (GCN) as our baseline model, followed by attempts to address class imbalance using weighted loss functions and sampling techniques. However, the GNN approach struggles significantly with this class imbalance, and the results are far from competitive with the traditional methods. Despite modifications to the loss function and training procedure, the GNN models show limited improvements in terms of F1 score, precision, and recall.
+
+For the Lipo dataset, the approach is similar, but this time, we are dealing with a regression task where the goal is to predict a continuous value representing the solubility of each molecule. Again, the SMILES strings are transformed into feature vectors using RDKit. We then train traditional regression models like Lasso, Ridge, and Random Forest. These models are evaluated based on metrics like Mean Absolute Error (MAE), Mean Squared Error (MSE), and Maximum Error, which help assess how well the models predict the continuous target variable.
+
+Random Forest once again emerges as the best performer among the traditional models, showing the lowest MAE and MSE, indicating a good fit for the regression task. Lasso and Ridge regression, while useful in many contexts, do not perform as well as Random Forest in this case.
+
+When switching to GNNs for this task, we again convert the SMILES strings into graph representations. A simple GCN model is used initially, but it performs poorly, with much higher MAE and MSE values than the Random Forest baseline. Despite this, we experiment with variations of GNN architectures, including SAGE and Attention-based convolutions, in an attempt to improve performance. However, these models do not outperform the traditional Random Forest model. Even after introducing modifications to the GNN structure, such as changing the number of layers or the size of the hidden layers, the GNN models struggle to make accurate predictions, highlighting the difficulty of applying GNNs to this regression task on a relatively small dataset.
+
+
+While GNNs show great potential, traditional ML methods like Random Forest perform better in this context. GNNs, especially with larger datasets, require significant computational resources and tuning to achieve comparable results. Optimizing class imbalance and feature design, along with advanced GNN architectures, could further improve performance. Also the time of development of the traditional ML models was much lower, which can also be a big deciding factor when choosing a paradigm of model development.
+
+
 ## Time breakdown
 
 | task                    | duration |
