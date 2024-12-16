@@ -71,6 +71,9 @@ Before using the traditional methods, we need to do feature engineering. Current
 | **Random Forest optimized**   | **0.275000** | 0.733333  | 0.169231 |
 | Naive bayes optimized         | 0.096937 | 0.051659  | **0.784903** |
 
+- Baseline Models: Logistic regression has the best precision (0.588235) but very low recall (0.153846). Naive Bayes achieves the highest recall (0.738462) but at the cost of very low precision (0.042572), leading to poor F1 scores. Random Forest balances precision and recall slightly better.
+- Optimized Models: Random Forest optimization results in the best F1 score (0.275000), improving its balance between precision and recall. Naive Bayes optimized excels in recall but still suffers from poor precision, while logistic regression optimization underperforms overall.
+- Conclusion: Random Forest performs best after optimization, but handling the class imbalance is key to further improving F1 scores.
 
 | model                        | mean absolute error | mean squared error | max error    |
 |------------------------------|---------------------|--------------------|--------------|
@@ -81,24 +84,38 @@ Before using the traditional methods, we need to do feature engineering. Current
 | Ridge optimized              | 0.679734            | 0.926124           | 9.812714     |
 | **Random Forrest optimized** | **0.609851**        | **0.619291**       | 3.591070     |
 
+- Baseline Models: Random Forest outperforms Lasso and Ridge, achieving the lowest MSE (0.629434) and MAE (0.614670), showcasing its suitability for the small dataset.
+- Optimized Models: Optimization improves Random Forest slightly, achieving the best results (MSE: 0.619291, MAE: 0.609851), while Lasso and Ridge see marginal gains but remain less effective.
+- Conclusion: Random Forest is the best choice for this regression task, excelling in both baseline and optimized settings.
+
+
 
 
 ### Graph Neural Networks
-#### Graph Encoding
-#### Overview of Graph Methods
+
+Graph Neural Networks (GNNs) are a class of deep learning models designed to process data represented as graphs, making them particularly well-suited for molecular toxicity prediction. Molecules can naturally be represented as graphs, where atoms are nodes and chemical bonds are edges. GNNs excel at capturing the complex relationships between these components, leveraging both local (atom-level) and global (molecule-level) structural features. Unlike traditional methods that rely on predefined molecular descriptors, GNNs learn relevant features directly from raw molecular graphs, enabling more flexible and accurate modeling. However, GNNs can be computationally expensive, especially for large or highly complex molecular graphs, and may require extensive hyperparameter tuning and large amounts of labeled data to achieve optimal performance. Additionally, they may struggle with interpretability, as the learned features can be difficult to relate to traditional chemical intuition.
+
+For starters, we will make use of the provided data loader from [Ogb](https://github.com/snap-stanford/ogb/blob/master/ogb/utils/mol.py). The data loader converts the molecules into a set of atoms and defines a 9-dimensional feature vector for each atom. The connections are represented in an adjacency matrix and then together with the atom embeddings converted to a [PyG data object](https://pytorch-geometric.readthedocs.io/en/2.5.2/generated/torch_geometric.data.Data.html#torch_geometric.data.Data)
+
 #### Establishing a baseline
+To establish a baseline, we will utilize a simple GCN architecture consisting of a graph convolutional layer, as described by Thomas [Thomas N. Kipf, Max Welling](https://arxiv.org/abs/1609.02907), followed by a ReLU activation function and a mean aggregation function to generate a single feature vector for the entire graph, which is then passed through a linear layer to produce the final output. 
+
+Because the HIV dataset is unbalanced, we will also experiment with the weighted loss function and sampling based on the [Inbalanced Sampler](https://pytorch-geometric.readthedocs.io/en/2.5.1/modules/loader.html#torch_geometric.loader.ImbalancedSampler) from PyG
+
 
 | model                   | f1      | precision | recall  |
 |-------------------------|---------|-----------|---------|
 | base GNN                | 0       | 0         | 0       |
 | base GNN, weighted loss | 0       | 0         | 0       |
-| base GNN, sampling      | 0.05941 | 0.4815    | 0.03166 |
+| base GNN, sampling      | 0.05941 | 0.4815    | 0.03166 | 
 
+The base GNN model shows no performance (all metrics are 0), indicating it fails to learn meaningful patterns from the unbalanced dataset without additional strategies. Using a weighted loss function does not improve performance, suggesting that this approach alone may not adequately address the severe class imbalance in the dataset. Incorporating sampling through the Imbalanced Sampler yields a slight improvement, with a modest F1 score (0.05941), precision (0.4815), and recall (0.03166). This suggests that sampling helps the model detect some positive samples but still struggles to balance precision and recall effectively. The baseline metrics are much lower than the Traditional ML methods, and the models will probably require a much bigger time investment than the traditional methods to achieve the same performance.
 
 | model    | mean absolute error | mean squared error | max error |
 |----------|---------------------|--------------------|-----------|
 | base GNN | 1.048               | 1.63               | 3.408     |
 
+The base GNN achieves a mean absolute error (1.048) and mean squared error (1.63), which are relatively high compared to traditional ML methods like Random Forest (MSE: 0.629434) in the earlier discussion.
 
 #### Trying Different model architectures
 
