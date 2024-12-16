@@ -50,11 +50,39 @@ For Continues integration and development this project relies on [GitHub Actions
 5. build docker container
 6. publish container to [DockerHub](https://hub.docker.com/repository/docker/custibor29/toxicml/general)
 
-If any of the steps fails the whole pipeline fails
+If any of the steps fail the whole pipeline fails
 ## Modeling
-### Dataset description
+The Hiv dataset contains 41128 data points, of which only 1443 represent positive classes. We will focus on improving the f1-score of our classifier and try to reach a performance similar to that of traditional ML methods. 
+
+The lipo dataset is small for a deep-learning task. It contains only 4000 data points. The target values range from -1.5 to 4.5. The focus will be on optimizing the mean squared error of our model, and we will try to achieve a similar or better score than the traditional methods. 
+
+Both datasets already come pre-split, which makes it easy to compare different models performances. 
+
 ### Traditional ML methods
+Before using the traditional methods, we need to do feature engineering. Currently, both of the datasets only contain two different variables the target variable which we are trying to predict and the [SMILE](https://en.wikipedia.org/wiki/Simplified_Molecular_Input_Line_Entry_System) encoding of the variable, which on its own cannot be used as a feature for classical ml algorithms, that work on tabular values. We can use Rdkit, a Python library for cheminformatics, to compute different numerical features of the chemicals in our dataset. With that, we can construct a 210-dimensional feature vector, which will be used during model fitting. For each dataset, we will build at least two models and present their non-optimized (baseline) performance and their performance with optimized hyperparameters.
+
 #### Performance and evaluation
+| model                         | f1 score | precision | recall   |
+|-------------------------------|----------|-----------|----------|
+| Logistic regression           | 0.243902 | 0.588235  | 0.153846 |
+| Random forest                 | 0.225166 | **0.809524**  | 0.130769 |
+| Naive bayes                   | 0.080503 | 0.042572  | 0.738462 |
+| Logistic regression optimized | 0.140713 | 0.080128  | 0.576923 |
+| **Random Forest optimized**   | **0.275000** | 0.733333  | 0.169231 |
+| Naive bayes optimized         | 0.096937 | 0.051659  | **0.784903** |
+
+
+| model                        | mean absolute error | mean squared error | max error    |
+|------------------------------|---------------------|--------------------|--------------|
+| Lasso                        | 1.006285            | 1.484697           | **3.261751** |
+| Ridge                        | 0.683129            | 0.935416           | 9.890663     |
+| Random Forrest               | 0.614670            | 0.629434           | 3.525267     |
+| Lasso optimized              | 0.695592            | 0.910692           | 8.294026     |
+| Ridge optimized              | 0.679734            | 0.926124           | 9.812714     |
+| **Random Forrest optimized** | **0.609851**        | **0.619291**       | 3.591070     |
+
+
+
 ### Graph Neural Networks
 #### Graph Encoding
 #### Overview of Graph Methods
